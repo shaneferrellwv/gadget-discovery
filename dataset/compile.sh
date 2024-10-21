@@ -13,10 +13,15 @@ for purpose in "${purposes[@]}"; do
             
             if [[ -f "$cpp_file" ]]; then
                 for opt in "${optimizations[@]}"; do
-                    # Compile the file using gcc with the current optimization level
-                    output="$purpose/$structure/$size/main${opt}.out"
-                    echo "Compiling $cpp_file with $opt"
-                    gcc "$cpp_file" "$opt" -o "$output"
+                    # Dynamic linking (default)
+                    output_dynamic="$purpose/$structure/$size/main${opt}_dynamic.out"
+                    echo "Compiling $cpp_file with $opt (dynamic linking)"
+                    gcc "$cpp_file" "$opt" -o "$output_dynamic"
+
+                    # Static linking
+                    output_static="$purpose/$structure/$size/main${opt}_static.out"
+                    echo "Compiling $cpp_file with $opt (static linking)"
+                    gcc "$cpp_file" "$opt" -static -o "$output_static"
                 done
             else
                 echo "File $cpp_file does not exist!"
